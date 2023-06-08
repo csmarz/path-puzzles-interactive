@@ -1,0 +1,135 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+.cell {
+    position: relative;
+}
+
+.hole-top::after {
+    content: "";
+    background-color: white;
+    height: 1px;
+    width: 50%;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    top: -1px;
+    left: 0;
+    right: 0;
+}
+
+.hole-left::after {
+    content: "";
+    background-color: white;
+    height: 50%;
+    width: 1px;
+    position: absolute;
+    margin-left: 0%;
+    margin-top: auto;
+    margin-bottom: auto;
+    top: 0;
+    bottom: 0;
+    left: -1px;
+}
+
+.hole-right::after {
+    content: "";
+    background-color: white;
+    height: 50%;
+    width: 1px;;
+    position: absolute;
+    margin-right: 0%;
+    margin-top: auto;
+    margin-bottom: auto;
+    top: 0;
+    bottom: 0;
+    right: -1px;
+}
+
+.hole-bottom::after {
+    content: "";
+    background-color: white;
+    height: 1px;
+    width: 50%;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0%;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+}
+
+.path-right::after {
+    content: "";
+    position: absolute;
+    background-color: purple;
+    height: 30%;
+    width: 100%;
+    top: 35%;
+    left: 50%;
+    overflow:visible;
+    z-index: 2;
+    border-radius: 1rem;
+}
+
+.path-down::after {
+    content: "";
+    position: absolute;
+    background-color: purple;
+    height: 100%;
+    width: 30%;
+    left: 35%;
+    top: 50%;
+    overflow:visible;
+    z-index: 2;
+    border-radius: 1rem;
+}
+
+.path-up::after {
+    content: "";
+    position: absolute;
+    background-color: purple;
+    height: 100%;
+    width: 30%;
+    left: 35%;
+    bottom: 50%;
+    overflow:visible;
+    z-index: 2;
+    border-radius: 1rem;
+}
+
+.path-left::after {
+    content: "";
+    position: absolute;
+    background-color: purple;
+    height: 30%;
+    width: 100%;
+    top: 35%;
+    right: 50%;
+    overflow:visible;
+    z-index: 2;
+    border-radius: 1rem;
+}
+
+.path-dot::after {
+    content: "";
+    background-color: blueviolet;
+    position: absolute;
+    height: 50%;
+    width: 50%;
+    margin: auto;
+    inset: 0; 
+    border-radius: 9999px;
+    z-index: 3;
+}
+
+.edge {
+    z-index:1; 
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+-webkit-appearance: none; 
+margin: 0; 
+}
