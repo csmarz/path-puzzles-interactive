@@ -1,12 +1,3 @@
-tailwind.config = {
-    theme: {
-        fontFamily: {
-            'sans': 'Noto Sans',
-            'mono': 'monospace',
-        },
-    },
-}
-
 $(document).ready(() => {
     let n = $('#N').val()
     let m = $('#M').val()
@@ -94,7 +85,7 @@ $(document).ready(() => {
         for (let i = 0; i < m; i++) {
             $('#instance').append(`<div id="row_${i+1}" class="flex items-center"><\div>`)
             $(`#row_${i+1}`).append(
-                `<input type="number" id="cr-${i+1}" value="${n}" class="cr flex items-center mr-2 bg-slate-100 rounded-full h-10 w-10 text-2xl text-sans place-content-center pl-2">`)
+                `<input type="number" id="cr-${i+1}" value="${n}" class="cr flex items-center mr-2 bg-slate-100 rounded-full h-10 w-10 text-2xl place-content-center pl-2">`)
             for (let j = 0; j < n; j++) {
                 $(`#row_${i+1}`).append(
                     `<div id=cell-${i+1}-${j+1} class="relative bg-white border-black border h-12 w-12"></div>`)
@@ -118,7 +109,7 @@ $(document).ready(() => {
         }
         $('#instance').append(`<div id = CC class="flex gap-2 place-content-center ml-10 mt-2"><\div>`)
         for (let j = 0; j < n; j++) { 
-            $('#CC').append(`<input type="number" id="cc-${j+1}" value="${m}" class="cc flex items-center bg-slate-100 rounded-full h-10 w-10 text-2xl text-sans place-content-center pl-2">`)
+            $('#CC').append(`<input type="number" id="cc-${j+1}" value="${m}" class="cc flex items-center bg-slate-100 rounded-full h-10 w-10 text-2xl place-content-center pl-2">`)
         }
     }
     
@@ -481,7 +472,7 @@ $(document).ready(() => {
             disableMode()
             $('.edge').addClass('bg-blue-400')
         } else {
-            $('.door-text').text('Change Door Cells')
+            $('.door-text').text('Change Door Cell')
             $('#doorButton').addClass('bg-indigo-600')
             $('#doorButton').addClass('hover:bg-indigo-700')
             $('#doorButton').addClass('active:bg-indigo-800')
@@ -522,7 +513,7 @@ $(document).ready(() => {
 
     $('#N').change(() => {
         if ($('#N').val() == 1 && $('#M').val() == $('#N').val()) {
-            setNaviText('1x1 puzzle grid is invalid 🫤.')
+            setNaviText('1x1 puzzle grid is invalid 🥲.')
             $('#N').val(n)
             return
         }
@@ -592,6 +583,7 @@ $(document).ready(() => {
                     }
                 }
             }
+            setNaviText('solution found! 😎.', false)
         })
     })
     updateInstance()

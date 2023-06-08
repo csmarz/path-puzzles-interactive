@@ -6,10 +6,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="{% static '../static/css/styles.css' %}">
     <script src="{% static '../static/js/jquery-3.7.0.min.js' %}"></script>
     <script src="{% static '../static/js/script.js' %}"></script>
+    <link rel="stylesheet" href="{% static '../static/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static '../static/css/tailwind.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geologica&display=swap" rel="stylesheet">
     <title>Path Puzzles Solver</title>
 </head>
 <body>
@@ -17,20 +20,20 @@
     <h1 class="pt-6 font-mono font-bold text-center text-5xl">Path Puzzles Solver</h1>
     <div class="mx-8">
         <h2 class="text-3xl font-bold font-mono mb-4 mt-4">About Path Puzzles</h2>
-        <p class="text sans text-lg">Path puzzle is a pencil-and-paper puzzle introduced by Roderick Kimball in his book in 2013. The puzzle is played on a grid with rows and columns. Some of these rows and columns have numbers on them, which act as clues. The goal is to draw a line that connects the two 'door cells' on the edge of the grid, passing through each cell at most once. You have to make sure that the number of cells you pass through in each row and column matches the clue numbers.</p>
-        <p class="text sans text-lg">To find out more about the puzzle, check <a href="https://www.enigami.fun/copy-of-puzzles" class="underline text-blue-800">this</a> out.</p>
+        <p class="text-lg">Path puzzle is a pencil-and-paper puzzle introduced by Roderick Kimball in his book in 2013. The puzzle is played on a grid with rows and columns. Some of these rows and columns have numbers on them, which act as clues. The goal is to draw a line that connects the two 'door cells' on the edge of the grid, passing through each cell at most once. You have to make sure that the number of cells you pass through in each row and column matches the clue numbers.</p>
+        <p class="text-lg">To find out more about the puzzle, check <a href="https://www.enigami.fun/copy-of-puzzles" class="underline text-blue-800">this</a> out.</p>
     </div>
     <div class="rounded-lg grid sm:grid-cols-1 lg:grid-cols-3 gap-4 bg-gray-200 mt-8 px-12 h-fit pt-6" style="padding-bottom: 4rem;">
         <div class="flex flex-col gap-4 items-start ml-28 mt-28">
             <div class="flex gap-4">
                 <label for="M" class="w-16 text-lg">Height</label>
                 <input type="range" id="M" name="M" min="1" max="10" value="5" list="values" class="w-60 bg-teal-500">
-                <p id="rangeValueM" class="ml-2 w-4 text-sans text-lg font-bold">5</p>
+                <p id="rangeValueM" class="ml-2 w-4 text-lg font-bold">5</p>
             </div>
             <div class="flex gap-4">
                 <label for="N" class="w-16 text-lg">Width</label>
                 <input type="range" id="N" name="N" min="1" max="10" value="5" list="values" class="w-60">
-                <p id="rangeValueN" class="ml-2 w-4 text-sans text-lg font-bold">5</p>
+                <p id="rangeValueN" class="ml-2 w-4 text-lg font-bold">5</p>
             </div>
 
             <datalist id="values">
@@ -50,12 +53,12 @@
             <div class="flex gap-4">
                 <div class="bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 rounded-full h-10 w-40 border border-gray-500 text-center text-white">
                     <button id="doorButton" type="button" class="w-full h-full">
-                        <p class="font-sans text-lg door-text">Change Door Cell</p>
+                        <p class="text-lg door-text">Change Door Cell</p>
                     </button>
                 </div>
                 <div class="bg-fuchsia-600 hover:bg-fuchsia-700 active:bg-fuchsia-800 rounded-full h-10 w-40 border border-gray-500  text-center text-white">
                     <button id="clearButton" type="button" class="w-full h-full">
-                        <p class="font-sans text-lg">Clear Grid</p>
+                        <p class="text-lg">Clear Grid</p>
                     </button>
                 </div>
             </div>
@@ -63,37 +66,37 @@
             <div class="flex gap-4">
                 <div class="bg-lime-600 hover:bg-lime-700 active:bg-lime-800 rounded-full h-10 w-40 border border-gray-500 text-center text-white">
                     <button id="modeButton" type="button" class="w-full h-full">
-                        <p class="font-sans mode-text text-lg">Manual Mode</p>
+                        <p class="mode-text text-lg">Manual Mode</p>
                     </button>
                 </div>
                 <div class="bg-red-600 hover:bg-red-700 active:bg-red-800 rounded-full h-10 w-40 border border-gray-500 text-center text-white">
                     <button id="undoButton" type="button" class="w-full h-full">
-                        <p class="font-sans text-lg undo-text">Undo Path</p>
+                        <p class="text-lg undo-text">Undo Path</p>
                     </button>
                 </div>
             </div>
 
             <div class="bg-yellow-300 hover:bg-yellow-400 active:bg-yellow-500 rounded-full h-12 w-32 border border-gray-500 text-center mt-8">
                 <button id="solveButton" type="button" class="w-full h-full">
-                    <p class="font-bold font-sans solve-text text-2xl">Solve!</p>
+                    <p class="font-bold solve-text text-2xl">Solve!</p>
                 </button>
             </div>
         </div>
         <div class="flex flex-col gap-4 items-center">
-            <div id="instance" class="flex flex-col place-content-center ml-4 mr-12" style="height: 36rem;"></div>
+            <div id="instance" class="flex flex-col place-content-center ml-4 mr-12 w-fit" style="height: 36rem;"></div>
             <div class="w-full h-12"><p id ="navi" class="text-2xl text-center text-red-600"></p></div>
         </div>
         <div class="ml-8">
             <h2 class="text-3xl font-bold font-mono align-center mb-4">Instructions</h2>
-            <ul class="text-sans list-disc text-lg">
+            <ul class="list-disc text-lg">
                 <li>Adjust the Width and Height sliders to change the dimension of the puzzle grid.</li>
-                <li>Move the door cells marked with <button class="cursor-default border-black border h-5 w-5 bg-green-200"></button> by pressing <button type="button" class="cursor-default w-32 h-8 bg-indigo-600 rounded-full h-8 w-40 border border-gray-500 text-center text-white">Change Door Cell</button>. </li>
+                <li>Move the door cells marked with <button class="cursor-default border-black border h-5 w-5 bg-green-200"></button> by pressing <button class="cursor-default w-40 h-8 bg-indigo-600 rounded-full border border-gray-500 text-center text-white">Change Door Cell</button>. </li>
                 <li>Modify the clue numbers for each row and column by directly changing their values. Leave the value empty for no restrictions.</li>
-                <li>Press <button type="button" class="cursor-default bg-yellow-300 rounded-full h-8 w-20 border border-gray-500 text-center font-bold font-sans solve-text text-xl">Solve!</button> to get the solver to find the solution of the puzzle and draw it on the grid if exists.</li>
+                <li>Press <button type="button" class="cursor-default bg-yellow-300 rounded-full h-8 w-20 border border-gray-500 text-center font-bold text-xl">Solve!</button> to get the solver to find the solution of the puzzle and draw it on the grid if exists.</li>
                 <li>Remove the path from the grid by pressing <button type="button" class="cursor-default h-8 w-24 bg-fuchsia-600 rounded-full border border-gray-500 text-center text-white">Clear Grid</button>.</li>
-                <li>Press <button type="button" class="cursor-default bg-lime-600 h-8 w-32 rounded-full bg-lime-600 border border-gray-500 text-center text-white">Manual Mode</button> to enter manual mode, in which you can try to solve the puzzle by yourself. </li>
-                <li>To start solving the puzzle, click on one of the door cell marked by <button class="cursor-default border-black border h-5 w-5 bg-green-500"></button> and then continue to its adjacent cells. Once you have reached the other door cells, you will receive your verdict.</li> 
-                <li>Made a mistake while creating the path? backtrack one cell by pressing <button type="button" class="bg-red-600 cursor-default w-24 h-8 rounded-full border border-gray-500 text-center text-white">Undo Path</button> or restart from scratch by simply pressing <button type="button" class="cursor-default h-8 w-24 bg-fuchsia-600 rounded-full border border-gray-500 text-center text-white">Clear Grid</button>.</li>
+                <li>Press <button type="button" class="cursor-default h-8 w-32 rounded-full bg-lime-600 border border-gray-500 text-center text-white">Manual Mode</button> to enter manual mode, in which you can try to solve the puzzle by yourself. </li>
+                <li>To start solving the puzzle, click on one of the door cells marked by <button class="cursor-default border-black border h-5 w-5 bg-green-500"></button> and then continue to its adjacent cells. Once you have reached the other door cell, you will receive a verdict indicating whether your solution is correct.</li> 
+                <li>Made a mistake while creating the path? backtrack one cell to try another by pressing <button type="button" class="bg-red-600 cursor-default w-32 h-8 rounded-full border border-gray-500 text-center text-white">Undo Path</button> or you can restart from scratch by simply pressing <button type="button" class="cursor-default h-8 w-32 bg-fuchsia-600 rounded-full border border-gray-500 text-center text-white">Clear Grid</button>.</li>
             </ul>
         </div>
     </div>

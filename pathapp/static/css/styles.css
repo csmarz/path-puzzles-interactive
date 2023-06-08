@@ -5,6 +5,10 @@
     position: relative;
 }
 
+body {
+    font-family: 'Geologica', sans-serif;
+}
+
 .hole-top::after {
     content: "";
     background-color: white;
