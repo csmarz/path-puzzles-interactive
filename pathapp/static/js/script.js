@@ -118,6 +118,15 @@ $(document).ready(() => {
         adj = []
         $('.path').remove()
         $('.path-dot').remove()
+        manualStatus = 'IDLE'
+        filled = false
+        undo = false
+        adj = []
+        path = []
+        if (manualEditable) {
+            $('.door').removeClass('bg-green-200')
+            $('.door').addClass('bg-green-500') 
+        }
     }
 
     function addDoorHole(i, j) {
@@ -395,6 +404,7 @@ $(document).ready(() => {
             $('#navi').addClass('text-green-600')
         }
         $('#navi').text(text)
+        
         setTimeout(() => {
             if (!warning) {
                 $('#navi').addClass('text-red-600')
@@ -404,6 +414,71 @@ $(document).ready(() => {
         }, 5000)
     }
 
+    function disableCase() {
+        $('#caseButton').prop('disabled', true)
+        $('#caseButton').addClass('bg-gray-300')
+        $('#caseButton').addClass('rounded-full')
+        $('#caseButton').addClass('text-black')
+        $('#caseButton').removeClass('bg-orange-600')
+        $('#caseButton').removeClass('hover:bg-orange-700')
+        $('#caseButton').removeClass('active:bg-orange-800')
+        $('#caseButton').removeClass('text-white')
+    }
+
+    function enableCase() {
+        $('#caseButton').prop('disabled', false)
+        $('#caseButton').removeClass('bg-gray-300')
+        $('#caseButton').addClass('bg-orange-600')
+        $('#caseButton').addClass('hover:bg-orange-700')
+        $('#caseButton').addClass('active:bg-orange-800')
+        $('#caseButton').removeClass('text-black')
+        $('#caseButton').addClass('text-white')
+    }
+
+    $('#caseButton').click(async () => {
+        $.get('api/case', (res, status) => {
+            const letter = res.letter
+            const instance = res.instance
+            $('#M').val(instance.m)
+            $('#N').val(instance.n)
+            $('#rangeValueM').text($('#M').val())
+            $('#rangeValueN').text($('#N').val())
+            updateInstance()
+
+            const start = [instance.start_x, instance.start_y]
+            const finish = [instance.finish_x, instance.finish_y]
+            $(`#cell-${1}-${1}`).find('.door').remove()
+            $(`#cell-${1}-${1}`).find('.door-hole').remove()
+            $(`#cell-${m}-${n}`).find('.door').remove()
+            $(`#cell-${m}-${n}`).find('.door-hole').remove()
+            door = [start, finish]
+            $(`#cell-${start[0]+1}-${start[1]+1}`).append('<div class="door w-full h-full bg-green-200"></div>')
+            $(`#cell-${finish[0]+1}-${finish[1]+1}`).append('<div class="door w-full h-full bg-green-200"></div>')
+            addDoorHole(start[0],start[1])
+            addDoorHole(finish[0],finish[1])
+            clearGrid()
+
+            const r = instance.cr
+            const c = instance.cc
+            for (let i = 0; i < m; i++) {
+                if (r[i] == -1) {
+                    $(`#cr-${i+1}`).val('')
+                    continue
+                }
+                $(`#cr-${i+1}`).val(r[i])
+            }
+            for (let j = 0; j < n; j++) {
+                if (c[j] == -1) {
+                    $(`#cc-${j+1}`).val('')
+                    continue
+                }
+                $(`#cc-${j+1}`).val(c[j])
+            }
+            updateConstraints()
+            setNaviText(`gotcha! the solution for this case resembles the letter ${letter.toUpperCase()} 🫡.`, false)
+        })
+    })
+
     $('#undoButton').click(() => {
         undoPath()
     })
@@ -411,7 +486,7 @@ $(document).ready(() => {
     $('#modeButton').click(() => {
         manualEditable = !manualEditable
         if (manualEditable) {
-            $('.mode-text').text('Solver Mode')
+            $('.mode-text').text('Give Up')
             $('#modeButton').removeClass('bg-lime-600')
             $('#modeButton').removeClass('hover:bg-lime-700')
             $('#modeButton').removeClass('active:bg-lime-800')
@@ -428,7 +503,7 @@ $(document).ready(() => {
             $('.door').removeClass('bg-green-200')
             $('.door').addClass('bg-green-500')
         } else {
-            $('.mode-text').text('Manual Mode')
+            $('.mode-text').text('Solve It Yourself')
             $('#modeButton').addClass('bg-lime-600')
             $('#modeButton').addClass('hover:bg-lime-700')
             $('#modeButton').addClass('active:bg-lime-800')
@@ -470,6 +545,7 @@ $(document).ready(() => {
             disableSolve()
             disableRange()
             disableMode()
+            disableCase()
             $('.edge').addClass('bg-blue-400')
         } else {
             $('.door-text').text('Change Door Cell')
@@ -483,22 +559,13 @@ $(document).ready(() => {
             enableRange()
             enableSolve()
             enableMode()
+            enableCase()
             $('.edge').removeClass('bg-blue-400')
         }
     })
 
     $('#clearButton').click(() => {
         clearGrid()
-        manualStatus = 'IDLE'
-        filled = false
-        undo = false
-        adj = []
-        path = []
-        if (manualEditable) {
-            $('.door').removeClass('bg-green-200')
-            $('.door').addClass('bg-green-500') 
-        }
-        
     })
 
     $('#M').change(() => {
@@ -564,8 +631,9 @@ $(document).ready(() => {
             clearGrid()
             if (!res.found) {
                 setNaviText('this grid has no solution 🙁.')
+                return
             }
-            let grid = res.grid
+            const grid = res.grid
             for (let i = 0; i < m; i++) {
                 for (let j = 0; j < n; j++) {
                     if (grid[i][j] != '.') {
