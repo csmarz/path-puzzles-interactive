@@ -438,9 +438,6 @@ $(document).ready(() => {
     $('#caseButton').click(async () => {
         $('.case-text').text('Fetching...')
         $.get('api/case', (res, status) => {
-            setTimeout(() => {
-                console.log('smth')
-            }, 3000)
             const letter = res.letter
             const instance = res.instance
             $('#M').val(instance.m)
