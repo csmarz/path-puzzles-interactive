@@ -267,7 +267,7 @@ $(document).ready(() => {
             path.push([i,j]) 
             if (door.some(([x,y]) => x == i && y == j)) {
                 if (verify(path)) {
-                    setNaviText('congrats, your solution is correct ✨.', false)
+                    setNaviText('congrats, your solution is correct ✨', false)
                     manualStatus = 'IDLE'
                 } else {
                     setNaviText('your solution is incorrect, try again? 😄')
@@ -298,7 +298,7 @@ $(document).ready(() => {
             doorMoveStatus = 'MOVE'
         } else {
             if (door.some(([x,y]) => x == i && y == j)) {
-                setNaviText('the door cells must be distinct cells ☝️.')
+                setNaviText('the door cells must be distinct cells ☝️')
                 return
             }
             door.push([i,j])
@@ -436,7 +436,11 @@ $(document).ready(() => {
     }
 
     $('#caseButton').click(async () => {
+        $('.case-text').text('Fetching...')
         $.get('api/case', (res, status) => {
+            setTimeout(() => {
+                console.log('smth')
+            }, 3000)
             const letter = res.letter
             const instance = res.instance
             $('#M').val(instance.m)
@@ -474,8 +478,9 @@ $(document).ready(() => {
                 }
                 $(`#cc-${j+1}`).val(c[j])
             }
+            $('.case-text').text('Get A Case')
             updateConstraints()
-            setNaviText(`gotcha! the solution for this case resembles the letter ${letter.toUpperCase()} 🫡.`, false)
+            setNaviText(`gotcha! the solution for this case resembles the letter ${letter.toUpperCase()} 😉`, false)
         })
     })
 
@@ -528,7 +533,7 @@ $(document).ready(() => {
 
     $('#doorButton').click(() => {
         if (doorMoveStatus != 'IDLE') {
-            setNaviText('select a cell first before finishing.')
+            setNaviText('select a cell first before finishing 😌')
             return
         }
         doorEditable = !doorEditable
@@ -570,7 +575,7 @@ $(document).ready(() => {
 
     $('#M').change(() => {
         if ($('#M').val() == 1 && $('#M').val() == $('#N').val()) {
-            setNaviText('1x1 puzzle grid is invalid 🫤.')
+            setNaviText('1x1 puzzle grid is invalid 🫤')
             $('#M').val(m)
             return
         }
@@ -580,7 +585,7 @@ $(document).ready(() => {
 
     $('#N').change(() => {
         if ($('#N').val() == 1 && $('#M').val() == $('#N').val()) {
-            setNaviText('1x1 puzzle grid is invalid 🥲.')
+            setNaviText('1x1 puzzle grid is invalid 🥲')
             $('#N').val(n)
             return
         }
@@ -609,7 +614,6 @@ $(document).ready(() => {
         disableRange()
         disableDoor()
         disableMode()
-        $('#doorButton').prop('disabled', true)
         $('.solve-text').text('Solving...')
         updateConstraints()
 
@@ -630,7 +634,7 @@ $(document).ready(() => {
             $('.solve-text').text('Solve!')
             clearGrid()
             if (!res.found) {
-                setNaviText('this grid has no solution 🙁.')
+                setNaviText('seems like this grid has no solution 🙁')
                 return
             }
             const grid = res.grid
@@ -651,7 +655,7 @@ $(document).ready(() => {
                     }
                 }
             }
-            setNaviText('solution found! 😎.', false)
+            setNaviText('solution found! 😎', false)
         })
     })
     updateInstance()
