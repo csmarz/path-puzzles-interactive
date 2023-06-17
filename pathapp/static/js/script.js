@@ -33,6 +33,16 @@ $(document).ready(() => {
         }
     } 
 
+    function convertDoorColor(toSolver=false) {
+        if (!toSolver) {
+            $('.door').removeClass('bg-green-300')
+            $('.door').addClass('bg-green-500') 
+            return
+        }
+        $('.door').removeClass('bg-green-500')
+        $('.door').addClass('bg-green-300') 
+    }
+
     function addCellHoles(i, j) {
         if (i == 0 && j == 0) {
             if (j != n-1) {
@@ -88,7 +98,7 @@ $(document).ready(() => {
                 `<input type="number" id="cr-${i+1}" value="${n}" class="cr flex items-center mr-2 bg-slate-100 rounded-full h-10 w-10 text-2xl place-content-center pl-2">`)
             for (let j = 0; j < n; j++) {
                 $(`#row_${i+1}`).append(
-                    `<div id=cell-${i+1}-${j+1} class="relative bg-white border-black border h-12 w-12"></div>`)
+                    `<div id=cell-${i+1}-${j+1} class="relative bg-white hover:bg-gray-300 cursor-pointer border-black border h-12 w-12"></div>`)
                     $(`#cell-${i+1}-${j+1}`).on('click', () => handleManualClick(i,j))
                 if (i == 0 || i == m-1 || j == 0 || j == n-1) {
                     $(`#cell-${i+1}-${j+1}`).append('<div class="absolute edge w-full h-full opacity-40"></div>')
@@ -96,12 +106,12 @@ $(document).ready(() => {
                 }
                 addCellHoles(i, j)
                 if (i == 0 && j == 0) {
-                    $(`#cell-${i+1}-${j+1}`).append('<div class="door w-full h-full bg-green-200"></div>')
+                    $(`#cell-${i+1}-${j+1}`).append('<div class="door w-full h-full bg-green-300 opacity-70"></div>')
                     door[0] = [i,j]
                     addDoorHole(i,j)
                 }
                 if (i == m-1 && j == n-1) {
-                    $(`#cell-${i+1}-${j+1}`).append('<div class="door w-full h-full bg-green-200"></div>')
+                    $(`#cell-${i+1}-${j+1}`).append('<div class="door w-full h-full bg-green-300 opacity-70"></div>')
                     door[1] = [m-1,n-1]
                     addDoorHole(i,j)
                 }
@@ -124,8 +134,7 @@ $(document).ready(() => {
         adj = []
         path = []
         if (manualEditable) {
-            $('.door').removeClass('bg-green-200')
-            $('.door').addClass('bg-green-500') 
+            convertDoorColor() 
         }
     }
 
@@ -209,15 +218,13 @@ $(document).ready(() => {
             removePath(lastCell[0], lastCell[1])
             manualStatus = 'IDLE'
             filled = false
-            $('.door').removeClass('bg-green-200')
-            $('.door').addClass('bg-green-500')
+            convertDoorColor()
             handleManualClick(lastCell[0], lastCell[1])
         }
         else if (path.length == 1) {
             path.pop()
             removePath(currentCell[0], currentCell[1])
-            $('.door').removeClass('bg-green-200')
-            $('.door').addClass('bg-green-500')
+            convertDoorColor()
             manualStatus = 'IDLE'
             filled = false
         } else {
@@ -236,8 +243,7 @@ $(document).ready(() => {
         if (!manualEditable) return
         if (manualStatus == 'IDLE') {
             if (!door.some(([x,y]) => x == i && y == j) || filled) return
-            $('.door').removeClass('bg-green-500')
-            $('.door').addClass('bg-green-200')
+            convertDoorColor(true)
             $(`#cell-${i+1}-${j+1}`).append('<div class="path-dot"></div>')
             path.push([i,j])
             adj = getValidAjacentCells(i,j)
@@ -302,7 +308,7 @@ $(document).ready(() => {
                 return
             }
             door.push([i,j])
-            $(`#cell-${i+1}-${j+1}`).append('<div class="door w-full h-full bg-green-200"></div>')
+            $(`#cell-${i+1}-${j+1}`).append('<div class="door w-full h-full bg-green-300 opacity-70"></div>')
             addDoorHole(i,j)
             doorMoveStatus = 'IDLE'
         }
@@ -453,8 +459,8 @@ $(document).ready(() => {
             $(`#cell-${m}-${n}`).find('.door').remove()
             $(`#cell-${m}-${n}`).find('.door-hole').remove()
             door = [start, finish]
-            $(`#cell-${start[0]+1}-${start[1]+1}`).append('<div class="door w-full h-full bg-green-200"></div>')
-            $(`#cell-${finish[0]+1}-${finish[1]+1}`).append('<div class="door w-full h-full bg-green-200"></div>')
+            $(`#cell-${start[0]+1}-${start[1]+1}`).append('<div class="door w-full h-full bg-green-300"></div>')
+            $(`#cell-${finish[0]+1}-${finish[1]+1}`).append('<div class="door w-full h-full bg-green-300"></div>')
             addDoorHole(start[0],start[1])
             addDoorHole(finish[0],finish[1])
             clearGrid()
@@ -502,8 +508,7 @@ $(document).ready(() => {
             disableDoor()
             clearGrid()
             enableUndo()
-            $('.door').removeClass('bg-green-200')
-            $('.door').addClass('bg-green-500')
+            convertDoorColor()
         } else {
             $('.mode-text').text('Solve It Yourself')
             $('#modeButton').addClass('bg-lime-600')
@@ -518,8 +523,7 @@ $(document).ready(() => {
             enableDoor()
             clearGrid()
             disableUndo()
-            $('.door').addClass('bg-green-200')
-            $('.door').removeClass('bg-green-500')
+            convertDoorColor(true)
             manualStatus = 'IDLE'
             filled = false
             undo = false
@@ -548,7 +552,8 @@ $(document).ready(() => {
             disableRange()
             disableMode()
             disableCase()
-            $('.edge').addClass('bg-blue-400')
+            $('.edge').addClass('bg-blue-300')
+            $('.edge').addClass('opacity-85')
         } else {
             $('.door-text').text('Change Door Cell')
             $('#doorButton').addClass('bg-indigo-600')
@@ -562,7 +567,8 @@ $(document).ready(() => {
             enableSolve()
             enableMode()
             enableCase()
-            $('.edge').removeClass('bg-blue-400')
+            $('.edge').removeClass('bg-blue-300')
+            $('.edge').removeClass('opacity-85')
         }
     })
 
