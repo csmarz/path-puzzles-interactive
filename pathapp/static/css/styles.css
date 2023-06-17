@@ -7,6 +7,9 @@
 
 body {
     font-family: 'Geologica', sans-serif;
+    max-width: 1180px;
+    min-width: 45rem;
+    margin: 0 auto !important;
 }
 
 .hole-top::after {

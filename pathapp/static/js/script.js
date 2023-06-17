@@ -98,7 +98,7 @@ $(document).ready(() => {
                 `<input type="number" id="cr-${i+1}" value="${n}" class="cr flex items-center mr-2 bg-slate-100 rounded-full h-10 w-10 text-2xl place-content-center pl-2">`)
             for (let j = 0; j < n; j++) {
                 $(`#row_${i+1}`).append(
-                    `<div id=cell-${i+1}-${j+1} class="relative bg-white hover:bg-gray-300 cursor-pointer border-black border h-12 w-12"></div>`)
+                    `<div id=cell-${i+1}-${j+1} class="relative bg-white hover:bg-gray-200 cursor-pointer border-black border h-12 w-12"></div>`)
                     $(`#cell-${i+1}-${j+1}`).on('click', () => handleManualClick(i,j))
                 if (i == 0 || i == m-1 || j == 0 || j == n-1) {
                     $(`#cell-${i+1}-${j+1}`).append('<div class="absolute edge w-full h-full opacity-40"></div>')
@@ -441,6 +441,28 @@ $(document).ready(() => {
         $('#caseButton').addClass('text-white')
     }
 
+    function disableConstraints() {
+        for (let i = 0; i < m; i++) {
+            $(`#cr-${i+1}`).prop('disabled', true)
+            $(`#cr-${i+1}`).addClass('text-gray-600')
+        }
+        for (let j = 0; j < n; j++) {
+            $(`#cc-${j+1}`).prop('disabled', true)
+            $(`#cc-${j+1}`).addClass('text-gray-600')
+        }
+    }
+
+    function enableConstraints() {
+        for (let i = 0; i < m; i++) {
+            $(`#cr-${i+1}`).prop('disabled', false)
+            $(`#cr-${i+1}`).removeClass('text-gray-600')
+        }
+        for (let j = 0; j < n; j++) {
+            $(`#cc-${j+1}`).prop('disabled', false)
+            $(`#cc-${j+1}`).removeClass('text-gray-600')
+        }
+    }
+
     $('#caseButton').click(async () => {
         $('.case-text').text('Fetching...')
         $.get('api/case', (res, status) => {
@@ -503,6 +525,7 @@ $(document).ready(() => {
             $('#modeButton').addClass('hover:bg-pink-700')
             $('#modeButton').addClass('active:bg-pink-800')
 
+            disableConstraints()
             disableSolve()
             disableRange()
             disableDoor()
@@ -518,6 +541,7 @@ $(document).ready(() => {
             $('#modeButton').removeClass('hover:bg-pink-700')
             $('#modeButton').removeClass('active:bg-pink-800')
 
+            enableConstraints()
             enableSolve()
             enableRange()
             enableDoor()
@@ -614,6 +638,7 @@ $(document).ready(() => {
     })
 
     $('#solveButton').click(async () => {
+        disableCase()
         disableRange()
         disableDoor()
         disableMode()
@@ -631,6 +656,7 @@ $(document).ready(() => {
             cc: cc,
         })
         $.post('api/solve', body, (res, status) => {
+            enableCase()
             enableRange()
             enableDoor()
             enableMode()
