@@ -46,16 +46,16 @@
                         </span>
                     </summary>
                     <ul class="list-disc text-lg mx-8 mt-3 pb-3">
+                        <li> Select a case from the case dropdown to have it mapped on the grid. The cases are separated into three difficulties: easy, medium, and hard.
+                        </li>
                         <li>Adjust the Width and Height sliders to change the dimension of the puzzle grid.</li>
-                        <li>Move the door cells marked with <button class="cursor-default border-black border h-5 w-5 bg-green-200"></button> by pressing <button class="cursor-default w-40 h-8 bg-indigo-600 rounded-full border border-gray-500 text-center text-white">Change Door Cell</button>. </li>
+                        <li>Move the door cells marked with <button class="cursor-default border-black border h-5 w-5 bg-green-300 opacity-70"></button> by pressing <button class="cursor-default w-40 h-8 bg-orange-600 rounded-full border border-gray-500 text-center text-white">Change Door Cell</button>. </li>
                         <li>Modify the clue numbers for each row and column by directly changing their values. Leave the value empty for no restrictions.</li>
                         <li>Press <button type="button" class="cursor-default bg-yellow-300 rounded-full h-8 w-20 border border-gray-500 text-center font-bold text-xl">Solve!</button> to get the solver to find the solution of the puzzle and draw it on the grid if exists.</li>
                         <li>Remove the path from the grid by pressing <button type="button" class="cursor-default h-8 w-32 bg-fuchsia-600 rounded-full border border-gray-500 text-center text-white">Clear Grid</button>.</li>
                         <li>Press <button type="button" class="cursor-default h-8 w-44 rounded-full bg-lime-600 border border-gray-500 text-center text-white">Solve It Yourself</button> to attempt solving the puzzle by yourself. </li>
-                        <li>To start solving the puzzle, click on one of the door cells marked by <button class="cursor-default border-black border h-5 w-5 bg-green-500"></button> and then continue to its adjacent cells. Once you have reached the other door cell, you will receive a verdict indicating whether your solution is correct.</li> 
+                        <li>To start solving the puzzle, click on one of the door cells marked by <button class="cursor-default border-black border h-5 w-5 bg-green-500 opacity-70"></button> and then continue to its adjacent cells. Once you have reached the other door cell, you will receive a verdict indicating whether your solution is correct.</li> 
                         <li>Made a mistake while creating the path? backtrack one cell to try another by pressing <button type="button" class="bg-red-600 cursor-default w-32 h-8 rounded-full border border-gray-500 text-center text-white">Undo Path</button> or you can restart from scratch by simply pressing <button type="button" class="cursor-default h-8 w-32 bg-fuchsia-600 rounded-full border border-gray-500 text-center text-white">Clear Grid</button>.</li>
-                        <li>Press <button class="cursor-default bg-orange-600 hover:bg-orange-700 active:bg-orange-800 rounded-full h-8 w-28 border border-gray-500 text-center text-white">Get A Case</button> to have a random case mapped on the grid.
-                        </li>
                     </ul>
                 </details>
             </div>
@@ -69,7 +69,7 @@
         <div class="flex flex-col gap-4 items-center justify-center">
             <div class="flex gap-4 items-center justify-center mb-8">
                 <label for="caseDropdown"class="w-28 text-lg">Get A Case:</label>
-                <select id="caseDropdown" name="caseDropdown" class="rounded-full w-48 h-10 px-4" onfocus="this.selectedIndex = -1;">
+                <select id="caseDropdown" name="caseDropdown" class="rounded-full w-48 h-10 px-4 bg-white" onfocus="this.selectedIndex = 0;">
                     <option value="0">Choose...</option>
                 </select>
             </div>
