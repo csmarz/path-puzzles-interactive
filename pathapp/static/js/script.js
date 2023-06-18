@@ -12,6 +12,7 @@ $(document).ready(() => {
     let path = []
     let cr = []
     let cc = []
+    let cases = []
 
     function updateConstraints() {
         cr = []
@@ -345,9 +346,9 @@ $(document).ready(() => {
         $('#doorButton').prop('disabled', true)
         $('#doorButton').addClass('bg-gray-300')
         $('#doorButton').addClass('rounded-full')
-        $('#doorButton').removeClass('bg-indigo-600')
-        $('#doorButton').removeClass('hover:bg-indigo-700')
-        $('#doorButton').removeClass('active:bg-indigo-800')
+        $('#doorButton').removeClass('bg-orange-600')
+        $('#doorButton').removeClass('hover:bg-orange-700')
+        $('#doorButton').removeClass('active:bg-orange-800')
         $('#doorButton').removeClass('text-white')
         $('#doorButton').addClass('text-black')
     }
@@ -355,9 +356,9 @@ $(document).ready(() => {
     function enableDoor() {
         $('#doorButton').prop('disabled', false)
         $('#doorButton').removeClass('bg-gray-300')
-        $('#doorButton').addClass('bg-indigo-600')
-        $('#doorButton').addClass('hover:bg-indigo-700')
-        $('#doorButton').addClass('active:bg-indigo-800')
+        $('#doorButton').addClass('bg-orange-600')
+        $('#doorButton').addClass('hover:bg-orange-700')
+        $('#doorButton').addClass('active:bg-orange-800')
         $('#doorButton').removeClass('text-black')
         $('#doorButton').addClass('text-white')
     }
@@ -417,28 +418,17 @@ $(document).ready(() => {
                 $('#navi').removeClass('text-green-600')
             } 
             $('#navi').empty()
-        }, 5000)
+        }, 7000)
     }
 
     function disableCase() {
-        $('#caseButton').prop('disabled', true)
-        $('#caseButton').addClass('bg-gray-300')
-        $('#caseButton').addClass('rounded-full')
-        $('#caseButton').addClass('text-black')
-        $('#caseButton').removeClass('bg-orange-600')
-        $('#caseButton').removeClass('hover:bg-orange-700')
-        $('#caseButton').removeClass('active:bg-orange-800')
-        $('#caseButton').removeClass('text-white')
+        $('#caseDropdown').prop('disabled', true)
+        $('#caseDropdown').addClass('text-gray-600')
     }
 
     function enableCase() {
-        $('#caseButton').prop('disabled', false)
-        $('#caseButton').removeClass('bg-gray-300')
-        $('#caseButton').addClass('bg-orange-600')
-        $('#caseButton').addClass('hover:bg-orange-700')
-        $('#caseButton').addClass('active:bg-orange-800')
-        $('#caseButton').removeClass('text-black')
-        $('#caseButton').addClass('text-white')
+        $('#caseDropdown').prop('disabled', false)
+        $('#caseDropdown').removeClass('text-gray-600')
     }
 
     function disableConstraints() {
@@ -463,12 +453,33 @@ $(document).ready(() => {
         }
     }
 
-    $('#caseButton').click(async () => {
-        $('.case-text').text('Fetching...')
+    async function fetchCases() {
+        disableCase()
         $.get('api/case', (res, status) => {
-            const letter = res.letter
-            const instance = res.instance
-            $('#M').val(instance.m)
+            let num = 0
+            cases = res.data
+            let easys = cases.filter((item) => item.name.startsWith('easy'))
+            easys.sort((a,b) => parseInt(a.name.split('-')[1]) - parseInt(b.name.split('-')[1]))
+            let meds = cases.filter((item) => item.name.startsWith('medium'))
+            meds.sort((a,b) => parseInt(a.name.split('-')[1]) - parseInt(b.name.split('-')[1]))
+            let hards = cases.filter((item) => item.name.startsWith('hard'))
+            hards.sort((a,b) => parseInt(a.name.split('-')[1]) - parseInt(b.name.split('-')[1]))
+            cases = [...easys, ...meds, ...hards]
+            cases.map((item) => {
+                num++
+                let name = item.name.split('-')
+                name[0] = name[0].charAt(0).toUpperCase() + name[0].slice(1)
+                $('#caseDropdown').append(`<option value="${num}">${name[0]} ${name[1]}</option>`)
+            })
+        })
+        enableCase()
+    }
+
+    $('#caseDropdown').change(() => {
+        const idx = parseInt($('#caseDropdown').val())
+        if (idx == 0) return
+        const instance = cases[idx-1].instance
+        $('#M').val(instance.m)
             $('#N').val(instance.n)
             $('#rangeValueM').text($('#M').val())
             $('#rangeValueN').text($('#N').val())
@@ -503,10 +514,9 @@ $(document).ready(() => {
                 }
                 $(`#cc-${j+1}`).val(c[j])
             }
-            $('.case-text').text('Get A Case')
             updateConstraints()
-            setNaviText(`gotcha! the solution for this case resembles the letter ${letter.toUpperCase()} 😉`, false)
-        })
+            if (manualEditable) disableConstraints()
+            setNaviText(`you got it! 😉`, false)
     })
 
     $('#undoButton').click(() => {
@@ -564,9 +574,9 @@ $(document).ready(() => {
         doorEditable = !doorEditable
         if (doorEditable) {
             $('.door-text').text('Finish Changing')
-            $('#doorButton').removeClass('bg-indigo-600')
-            $('#doorButton').removeClass('hover:bg-indigo-700')
-            $('#doorButton').removeClass('active:bg-indigo-800')
+            $('#doorButton').removeClass('bg-orange-600')
+            $('#doorButton').removeClass('hover:bg-orange-700')
+            $('#doorButton').removeClass('active:bg-orange-800')
             $('#doorButton').addClass('rounded-full')
             $('#doorButton').addClass('bg-teal-600')
             $('#doorButton').addClass('hover:bg-teal-700')
@@ -580,9 +590,9 @@ $(document).ready(() => {
             $('.edge').addClass('opacity-85')
         } else {
             $('.door-text').text('Change Door Cell')
-            $('#doorButton').addClass('bg-indigo-600')
-            $('#doorButton').addClass('hover:bg-indigo-700')
-            $('#doorButton').addClass('active:bg-indigo-800')
+            $('#doorButton').addClass('bg-orange-600')
+            $('#doorButton').addClass('hover:bg-orange-700')
+            $('#doorButton').addClass('active:bg-orange-800')
             $('#doorButton').removeClass('bg-teal-600')
             $('#doorButton').removeClass('hover:bg-teal-700')
             $('#doorButton').removeClass('active:bg-teal-800')
@@ -689,4 +699,5 @@ $(document).ready(() => {
     })
     updateInstance()
     disableUndo()
+    fetchCases()
 })

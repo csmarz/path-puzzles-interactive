@@ -6,18 +6,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="{% static '../static/js/jquery.js' %}"></script>
-    <script src="{% static '../static/js/script.js' %}"></script>
-    <link rel="stylesheet" href="{% static '../static/css/styles.css' %}">
-    <!-- <link rel="stylesheet" href="{% static '../static/css/tailwind.css' %}"> -->
+    <script src="{% static '/js/jquery.js' %}"></script>
+    <script src="{% static '/js/script.js' %}"></script>
+    <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+    <!-- <link rel="stylesheet" href="{% static '/css/tailwind.css' %}"> -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geologica&display=swap">
-    <title>Path Puzzles Solver</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static '/images/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static '/images/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static '/images/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static '/images/site.webmanifest' %}">
+    <title>Path Puzzles App</title>
 </head>
 <body>
-    <h1 class="my-6 font-mono font-bold text-center text-5xl">Path Puzzles Solver</h1>
+    <h1 class="my-6 font-mono font-bold text-center text-5xl">Path Puzzles App</h1>
     <div class="mx-8 bg-gray-200 rounded-2xl border border-gray-400">
         <div class="grid divide-y divide-neutral-200">
             <div>
@@ -63,6 +67,12 @@
             <div class="w-full h-12"><p id ="navi" class="text-2xl text-center text-red-600"></p></div>
         </div>
         <div class="flex flex-col gap-4 items-center justify-center">
+            <div class="flex gap-4 items-center justify-center mb-8">
+                <label for="caseDropdown"class="w-28 text-lg">Get A Case:</label>
+                <select id="caseDropdown" name="caseDropdown" class="rounded-full w-48 h-10 px-4" onfocus="this.selectedIndex = -1;">
+                    <option value="0">Choose...</option>
+                </select>
+            </div>
             <div class="flex gap-4">
                 <label for="M" class="w-16 text-lg">Height</label>
                 <input type="range" id="M" name="M" min="1" max="10" value="5" list="values" class="w-60 bg-teal-500">
@@ -85,27 +95,22 @@
                 <option value="9" label="9"></option>
                 <option value="10" label="10"></option>
             </datalist>
-            <div class="flex gap-4">
-                <div class="bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 rounded-full h-10 w-40 border border-gray-500 text-center text-white">
+            <div class="flex">
+                <div class="bg-orange-600 hover:bg-orange-700 active:bg-indigo-800 rounded-full h-10 w-40 border border-gray-500 text-center text-white" style="width: 21rem;">
                     <button id="doorButton" type="button" class="w-full h-full">
                         <p class="text-lg door-text">Change Door Cell</p>
+                    </button>
+                </div>
+            </div>
+            <div class="flex gap-4">
+                <div class="bg-red-600 hover:bg-red-700 active:bg-red-800 rounded-full h-10 w-40 border border-gray-500 text-center text-white">
+                    <button id="undoButton" type="button" class="w-full h-full">
+                        <p class="text-lg undo-text">Undo Path</p>
                     </button>
                 </div>
                 <div class="bg-fuchsia-600 hover:bg-fuchsia-700 active:bg-fuchsia-800 rounded-full h-10 w-40 border border-gray-500  text-center text-white">
                     <button id="clearButton" type="button" class="w-full h-full">
                         <p class="text-lg">Clear Grid</p>
-                    </button>
-                </div>
-            </div>
-            <div class="flex gap-4">
-                <div class="bg-orange-600 hover:bg-orange-700 active:bg-orange-800 rounded-full h-10 w-40 border border-gray-500 text-center text-white">
-                    <button id="caseButton" type="button" class="w-full h-full">
-                        <p class="text-lg case-text">Get A Case</p>
-                    </button>
-                </div>
-                <div class="bg-red-600 hover:bg-red-700 active:bg-red-800 rounded-full h-10 w-40 border border-gray-500 text-center text-white">
-                    <button id="undoButton" type="button" class="w-full h-full">
-                        <p class="text-lg undo-text">Undo Path</p>
                     </button>
                 </div>
             </div>
