@@ -182,6 +182,8 @@ $(document).ready(() => {
     }
 
     function verify() {
+        let invalid = []
+        let isIncompliant = false
         updateConstraints()
         for (let idx = 0; idx < path.length; idx++) {
             if (cr[path[idx][0]] - 1 == -1 || cc[path[idx][1]] - 1 == -1) {
@@ -191,13 +193,20 @@ $(document).ready(() => {
             if (cc[path[idx][1]] != -1) cc[path[idx][1]] = cc[path[idx][1]] -1
         }
         for (let i = 0; i < m; i++) {
-            if (cr[i] > 0) return false
+            if (cr[i] > 0)  {
+                invalid.push(`cr-${i+1}`)
+                isIncompliant = true
+            }
         }
         for (let j = 0; j < n; j++) {
-            if(cc[j] > 0) return false
+            if(cc[j] > 0) {
+                invalid.push(`cc-${j+1}`)
+                isIncompliant = true
+            }
         }
         updateConstraints()
-        return true
+        if (isIncompliant) return [false, invalid]
+        return [true, []]
     }
 
     function removePath(i, j) {
@@ -273,10 +282,17 @@ $(document).ready(() => {
 
             path.push([i,j]) 
             if (door.some(([x,y]) => x == i && y == j)) {
-                if (verify(path)) {
+                const verdict = verify(path)
+                if (verdict[0]) {
                     setNaviText('congrats, your solution is correct ✨', false)
                     manualStatus = 'IDLE'
                 } else {
+                    verdict[1].forEach((element) => {
+                        $(`#${element}`).addClass('bg-red-200')
+                        setTimeout(() => {
+                            $(`#${element}`).removeClass('bg-red-200')
+                        }, 500)
+                    })
                     setNaviText('your solution is incorrect, try again? 😄')
                     undoPath()
                 }

@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
-    'joshuagatizz.pythonanywhere.com'
+    'joshuagatizz.pythonanywhere.com',
 ]
 
 
