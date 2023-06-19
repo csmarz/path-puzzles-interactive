@@ -136,6 +136,7 @@ $(document).ready(() => {
         path = []
         if (manualEditable) {
             convertDoorColor() 
+            setInfoText('select one door cell as a starting point')
         }
     }
 
@@ -237,6 +238,7 @@ $(document).ready(() => {
             convertDoorColor()
             manualStatus = 'IDLE'
             filled = false
+            setInfoText('select one door cell as a starting point')
         } else {
             path.pop()
             let lastCell = path[path.length-1]
@@ -260,6 +262,8 @@ $(document).ready(() => {
             markAdjacentCells()
             manualStatus = 'MOVE'
             filled = true
+
+            setInfoText('reach the ending cell')
         } else if (manualStatus == 'MOVE') {
             dx = [1,0,0,-1]
             dy = [0,-1,1,0]
@@ -285,6 +289,7 @@ $(document).ready(() => {
                 const verdict = verify(path)
                 if (verdict[0]) {
                     setNaviText('congrats, your solution is correct ✨', false)
+                    setInfoText('try another case or another solution! 🤓')
                     manualStatus = 'IDLE'
                 } else {
                     verdict[1].forEach((element) => {
@@ -319,6 +324,8 @@ $(document).ready(() => {
             }
             door = newDoor
             doorMoveStatus = 'MOVE'
+
+            setInfoText('select the new cell')
         } else {
             if (door.some(([x,y]) => x == i && y == j)) {
                 setNaviText('the door cells must be distinct cells ☝️')
@@ -328,6 +335,8 @@ $(document).ready(() => {
             $(`#cell-${i+1}-${j+1}`).append('<div class="door w-full h-full bg-green-300 opacity-70"></div>')
             addDoorHole(i,j)
             doorMoveStatus = 'IDLE'
+
+            setInfoText('select a door cell you want to move')
         }
     }
 
@@ -435,6 +444,10 @@ $(document).ready(() => {
             } 
             $('#navi').empty()
         }, 7000)
+    }
+
+    function setInfoText(text='') {
+        $('#info').text(text)
     }
 
     function disableCase() {
@@ -558,6 +571,8 @@ $(document).ready(() => {
             clearGrid()
             enableUndo()
             convertDoorColor()
+
+            setInfoText('select one door cell as a starting point')
         } else {
             $('.mode-text').text('Solve It Yourself')
             $('#modeButton').addClass('bg-lime-600')
@@ -579,6 +594,8 @@ $(document).ready(() => {
             undo = false
             adj = []
             path = []
+
+            setInfoText()
         }
     })
 
@@ -604,6 +621,8 @@ $(document).ready(() => {
             disableCase()
             $('.edge').addClass('bg-blue-300')
             $('.edge').addClass('opacity-85')
+
+            setInfoText('select a door cell you want to move')
         } else {
             $('.door-text').text('Change Door Cell')
             $('#doorButton').addClass('bg-orange-600')
@@ -619,6 +638,8 @@ $(document).ready(() => {
             enableCase()
             $('.edge').removeClass('bg-blue-300')
             $('.edge').removeClass('opacity-85')
+
+            setInfoText()
         }
     })
 
@@ -688,6 +709,16 @@ $(document).ready(() => {
             enableMode()
             $('.solve-text').text('Solve!')
             clearGrid()
+            
+            if (!$('#fillGrid').prop('checked')) {
+                if (!res.found) {
+                    setNaviText('no solution for this one 🫤')
+                } else {
+                    setNaviText('this grid has a solution! 😏', false)
+                }
+                return
+            }
+
             if (!res.found) {
                 setNaviText('seems like this grid has no solution 🙁')
                 return

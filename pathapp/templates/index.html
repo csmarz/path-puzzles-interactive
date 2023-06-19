@@ -9,8 +9,8 @@
     <script src="{% static '/js/jquery.js' %}"></script>
     <script src="{% static '/js/script.js' %}"></script>
     <link rel="stylesheet" href="{% static '/css/styles.css' %}">
-    <!-- <link rel="stylesheet" href="{% static '/css/tailwind.css' %}"> -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static '/css/tailwind.css' %}">
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geologica&display=swap">
@@ -48,10 +48,11 @@
                     <ul class="list-disc text-lg mx-8 mt-3 pb-3">
                         <li> Select a case from the case dropdown to have it mapped on the grid. The cases are separated into three difficulties: easy, medium, and hard.
                         </li>
-                        <li>Adjust the Width and Height sliders to change the dimension of the puzzle grid.</li>
+                        <li>Adjust the "Width" and "Height" sliders to change the dimension of the puzzle grid.</li>
                         <li>Move the door cells marked with <button class="cursor-default border-black border h-5 w-5 bg-green-300 opacity-70"></button> by pressing <button class="cursor-default w-40 h-8 bg-orange-600 rounded-full border border-gray-500 text-center text-white">Change Door Cell</button>. </li>
                         <li>Modify the clue numbers for each row and column by directly changing their values. Leave the value empty for no restrictions.</li>
                         <li>Press <button type="button" class="cursor-default bg-yellow-300 rounded-full h-8 w-20 border border-gray-500 text-center font-bold text-xl">Solve!</button> to get the solver to find the solution of the puzzle and draw it on the grid if exists.</li>
+                        <li>If you just want to know whether a grid has a solution without getting spoiled by the solution itself, just uncheck the "Fill Grid" checkbox.</li>
                         <li>Remove the path from the grid by pressing <button type="button" class="cursor-default h-8 w-32 bg-fuchsia-600 rounded-full border border-gray-500 text-center text-white">Clear Grid</button>.</li>
                         <li>Press <button type="button" class="cursor-default h-8 w-44 rounded-full bg-lime-600 border border-gray-500 text-center text-white">Solve It Yourself</button> to attempt solving the puzzle by yourself. </li>
                         <li>To start solving the puzzle, click on one of the door cells marked by <button class="cursor-default border-black border h-5 w-5 bg-green-500 opacity-70"></button> and then continue to its adjacent cells. Once you have reached the other door cell, you will receive a verdict indicating whether your solution is correct.</li> 
@@ -62,9 +63,12 @@
         </div>
     </div>
     <div class="rounded-2xl grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 bg-gray-200 border border-gray-400 mt-8 px-12 h-fit pt-6">
-        <div class="flex flex-col gap-4 items-center">
+        <div class="flex flex-col items-center">
             <div id="instance" class="flex flex-col place-content-center ml-4 mr-12 w-fit" style="height: 36rem;"></div>
-            <div class="w-full h-12"><p id ="navi" class="text-2xl text-center text-red-600"></p></div>
+            <div>
+                <div class="w-full h-12"><p id ="navi" class="text-2xl text-center text-red-600"></p></div>
+                <div class="w-full h-12"><p id ="info" class="text-2xl text-center text-blue-600"></p></div>
+            </div>
         </div>
         <div class="flex flex-col gap-4 items-center justify-center">
             <div class="flex gap-4 items-center justify-center mb-8">
@@ -121,10 +125,16 @@
                     </button>
                 </div>
             </div>
-            <div class="bg-yellow-300 hover:bg-yellow-400 active:bg-yellow-500 rounded-full h-12 w-32 border border-gray-500 text-center mt-8 mb-4">
-                <button id="solveButton" type="button" class="w-full h-full">
-                    <p class="font-bold solve-text text-2xl">Solve!</p>
-                </button>
+            <div class="flex flex-col items-center justify-center text-center mb-4">
+                <div class="flex gap-4 items-center justify-center">
+                    <input type="checkbox" id="fillGrid" class="h-5 w-5 accent-sky-500 focus:accent-sky-600" checked>
+                    <label for="fillGrid" class="text-lg">Fill Grid</label>
+                </div>
+                <div class="bg-yellow-300 hover:bg-yellow-400 active:bg-yellow-500 rounded-full h-12 w-32 border border-gray-500 text-center mt-1 mb-4">
+                    <button id="solveButton" type="button" class="w-full h-full">
+                        <p class="font-bold solve-text text-2xl">Solve!</p>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
