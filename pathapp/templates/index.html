@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="{% static '/js/jquery.js' %}"></script>
     <script src="{% static '/js/script.js' %}"></script>
-    <link rel="stylesheet" href="{% static '/css/styles.css' %}">
     <link rel="stylesheet" href="{% static '/css/tailwind.css' %}">
+    <link rel="stylesheet" href="{% static '/css/styles.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geologica&display=swap">
@@ -78,7 +78,7 @@
             </div>
             <div class="flex gap-4">
                 <label for="M" class="w-16 text-lg">Height</label>
-                <input type="range" id="M" name="M" min="1" max="10" value="5" list="values" class="w-60 bg-teal-500">
+                <input type="range" id="M" name="M" min="1" max="10" value="5" list="values" class="w-60">
                 <p id="rangeValueM" class="ml-2 w-4 text-lg font-bold">5</p>
             </div>
             <div class="flex gap-4">
@@ -129,7 +129,7 @@
                     <input type="checkbox" id="fillGrid" class="h-5 w-5 accent-sky-500 focus:accent-sky-600" checked>
                     <label for="fillGrid" class="text-lg">Fill Grid</label>
                 </div>
-                <div class="bg-yellow-300 hover:bg-yellow-400 active:bg-yellow-500 rounded-full h-12 w-32 border border-gray-500 text-center mt-1 mb-4">
+                <div class="bg-yellow-300 hover:bg-yellow-400 active:bg-yellow-500 rounded-full h-12 w-36 border border-gray-500 text-center mt-1 mb-4">
                     <button id="solveButton" type="button" class="w-full h-full">
                         <p class="font-bold solve-text text-2xl">Solve!</p>
                     </button>

@@ -187,8 +187,12 @@ $(document).ready(() => {
         let isIncompliant = false
         updateConstraints()
         for (let idx = 0; idx < path.length; idx++) {
-            if (cr[path[idx][0]] - 1 == -1 || cc[path[idx][1]] - 1 == -1) {
-                return false
+            if (cr[path[idx][0]] - 1 == -1) {
+                cr[path[idx][0]] = 99
+                continue
+            } else if (cc[path[idx][1]] - 1 == -1) {
+                cc[path[idx][1]] = 99
+                continue
             }
             if (cr[path[idx][0]] != -1) cr[path[idx][0]] = cr[path[idx][0]] -1
             if (cc[path[idx][1]] != -1) cc[path[idx][1]] = cc[path[idx][1]] -1
@@ -206,8 +210,7 @@ $(document).ready(() => {
             }
         }
         updateConstraints()
-        if (isIncompliant) return [false, invalid]
-        return [true, []]
+        return [!isIncompliant, invalid]
     }
 
     function removePath(i, j) {
@@ -287,15 +290,18 @@ $(document).ready(() => {
             path.push([i,j]) 
             if (door.some(([x,y]) => x == i && y == j)) {
                 const verdict = verify(path)
+                console.log(verdict)
                 if (verdict[0]) {
                     setNaviText('congrats, your solution is correct ✨', false)
                     setInfoText('try another case or another solution! 🤓')
                     manualStatus = 'IDLE'
                 } else {
                     verdict[1].forEach((element) => {
+                        $(`#${element}`).removeClass('bg-slate-100')
                         $(`#${element}`).addClass('bg-red-200')
                         setTimeout(() => {
                             $(`#${element}`).removeClass('bg-red-200')
+                            $(`#${element}`).addClass('bg-slate-100')
                         }, 500)
                     })
                     setNaviText('your solution is incorrect, try again? 😄')
@@ -504,48 +510,56 @@ $(document).ready(() => {
         enableCase()
     }
 
+    $('#fillGrid').change(() => {
+        if (!$('#fillGrid').prop('checked')) {
+            $('.solve-text').text('Check!')
+        } else {
+            $('.solve-text').text('Solve!')
+        }
+    })
+
     $('#caseDropdown').change(() => {
         const idx = parseInt($('#caseDropdown').val())
         if (idx == 0) return
         const instance = cases[idx-1].instance
         $('#M').val(instance.m)
-            $('#N').val(instance.n)
-            $('#rangeValueM').text($('#M').val())
-            $('#rangeValueN').text($('#N').val())
-            updateInstance()
+        $('#N').val(instance.n)
+        $('#rangeValueM').text($('#M').val())
+        $('#rangeValueN').text($('#N').val())
+        updateInstance()
 
-            const start = [instance.start_x, instance.start_y]
-            const finish = [instance.finish_x, instance.finish_y]
-            $(`#cell-${1}-${1}`).find('.door').remove()
-            $(`#cell-${1}-${1}`).find('.door-hole').remove()
-            $(`#cell-${m}-${n}`).find('.door').remove()
-            $(`#cell-${m}-${n}`).find('.door-hole').remove()
-            door = [start, finish]
-            $(`#cell-${start[0]+1}-${start[1]+1}`).append('<div class="door w-full h-full bg-green-300"></div>')
-            $(`#cell-${finish[0]+1}-${finish[1]+1}`).append('<div class="door w-full h-full bg-green-300"></div>')
-            addDoorHole(start[0],start[1])
-            addDoorHole(finish[0],finish[1])
-            clearGrid()
+        const start = [instance.start_x, instance.start_y]
+        const finish = [instance.finish_x, instance.finish_y]
+        $(`#cell-${1}-${1}`).find('.door').remove()
+        $(`#cell-${1}-${1}`).find('.door-hole').remove()
+        $(`#cell-${m}-${n}`).find('.door').remove()
+        $(`#cell-${m}-${n}`).find('.door-hole').remove()
+        door = [start, finish]
+        $(`#cell-${start[0]+1}-${start[1]+1}`).append('<div class="door w-full h-full bg-green-300"></div>')
+        $(`#cell-${finish[0]+1}-${finish[1]+1}`).append('<div class="door w-full h-full bg-green-300"></div>')
+        addDoorHole(start[0],start[1])
+        addDoorHole(finish[0],finish[1])
+        clearGrid()
 
-            const r = instance.cr
-            const c = instance.cc
-            for (let i = 0; i < m; i++) {
-                if (r[i] == -1) {
-                    $(`#cr-${i+1}`).val('')
-                    continue
-                }
-                $(`#cr-${i+1}`).val(r[i])
+        const r = instance.cr
+        const c = instance.cc
+        for (let i = 0; i < m; i++) {
+            if (r[i] == -1) {
+                $(`#cr-${i+1}`).val('')
+                continue
             }
-            for (let j = 0; j < n; j++) {
-                if (c[j] == -1) {
-                    $(`#cc-${j+1}`).val('')
-                    continue
-                }
-                $(`#cc-${j+1}`).val(c[j])
+            $(`#cr-${i+1}`).val(r[i])
+        }
+        for (let j = 0; j < n; j++) {
+            if (c[j] == -1) {
+                $(`#cc-${j+1}`).val('')
+                continue
             }
-            updateConstraints()
-            if (manualEditable) disableConstraints()
-            setNaviText(`you got it! 😉`, false)
+            $(`#cc-${j+1}`).val(c[j])
+        }
+        updateConstraints()
+        if (manualEditable) disableConstraints()
+        setNaviText(`you got it! 😉`, false)
     })
 
     $('#undoButton').click(() => {
@@ -689,7 +703,11 @@ $(document).ready(() => {
         disableRange()
         disableDoor()
         disableMode()
-        $('.solve-text').text('Solving...')
+        if ($('#fillGrid').prop('checked')) {
+            $('.solve-text').text('Solving...')
+        } else {
+            $('.solve-text').text('Checking...')
+        }
         updateConstraints()
 
         let body = JSON.stringify({
@@ -707,9 +725,13 @@ $(document).ready(() => {
             enableRange()
             enableDoor()
             enableMode()
-            $('.solve-text').text('Solve!')
+            if ($('#fillGrid').prop('checked')) {
+                $('.solve-text').text('Solve!')
+            } else {
+                $('.solve-text').text('Check!')
+            }
             clearGrid()
-            
+
             if (!$('#fillGrid').prop('checked')) {
                 if (!res.found) {
                     setNaviText('no solution for this one 🫤')
