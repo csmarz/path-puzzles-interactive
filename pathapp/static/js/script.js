@@ -188,11 +188,9 @@ $(document).ready(() => {
         updateConstraints()
         for (let idx = 0; idx < path.length; idx++) {
             if (cr[path[idx][0]] - 1 == -1) {
-                cr[path[idx][0]] = 99
-                continue
+                cr[path[idx][0]] = 999
             } else if (cc[path[idx][1]] - 1 == -1) {
-                cc[path[idx][1]] = 99
-                continue
+                cc[path[idx][1]] = 999
             }
             if (cr[path[idx][0]] != -1) cr[path[idx][0]] = cr[path[idx][0]] -1
             if (cc[path[idx][1]] != -1) cc[path[idx][1]] = cc[path[idx][1]] -1
@@ -290,7 +288,6 @@ $(document).ready(() => {
             path.push([i,j]) 
             if (door.some(([x,y]) => x == i && y == j)) {
                 const verdict = verify(path)
-                console.log(verdict)
                 if (verdict[0]) {
                     setNaviText('congrats, your solution is correct ✨', false)
                     setInfoText('try another case or another solution! 🤓')
@@ -302,7 +299,7 @@ $(document).ready(() => {
                         setTimeout(() => {
                             $(`#${element}`).removeClass('bg-red-200')
                             $(`#${element}`).addClass('bg-slate-100')
-                        }, 500)
+                        }, 800)
                     })
                     setNaviText('your solution is incorrect, try again? 😄')
                     undoPath()
