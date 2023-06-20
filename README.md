@@ -4,7 +4,7 @@
 
 ## Local Installation
 
-This app uses Django framework and PySAT library. To use this app locally, clone the app and then run the following command to install the required dependencies:
+This app uses Django framework and PySAT library. To use this app locally, clone this repository and then run the following command to install the required dependencies using pip:
 ```
 pip install -r requirements.txt
 ```
@@ -12,4 +12,4 @@ Next, run the app with the following command:
 ```
 python manage.py runserver
 ```
-You can then visit the app on http://localhost:8000.
+You can then open your browser and visit the app on http://localhost:8000.

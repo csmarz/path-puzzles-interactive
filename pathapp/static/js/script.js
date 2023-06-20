@@ -535,8 +535,8 @@ $(document).ready(() => {
         $(`#cell-${m}-${n}`).find('.door').remove()
         $(`#cell-${m}-${n}`).find('.door-hole').remove()
         door = [start, finish]
-        $(`#cell-${start[0]+1}-${start[1]+1}`).append('<div class="door w-full h-full bg-green-300"></div>')
-        $(`#cell-${finish[0]+1}-${finish[1]+1}`).append('<div class="door w-full h-full bg-green-300"></div>')
+        $(`#cell-${start[0]+1}-${start[1]+1}`).append('<div class="door w-full h-full bg-green-300 opacity-70"></div>')
+        $(`#cell-${finish[0]+1}-${finish[1]+1}`).append('<div class="door w-full h-full bg-green-300 opacity-70"></div>')
         addDoorHole(start[0],start[1])
         addDoorHole(finish[0],finish[1])
         clearGrid()
