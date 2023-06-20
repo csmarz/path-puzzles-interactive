@@ -249,6 +249,7 @@ $(document).ready(() => {
             removePath(lastCell[0], lastCell[1])
             if (manualStatus == 'IDLE') manualStatus = 'MOVE'
             handleManualClick(lastCell[0], lastCell[1])
+            setInfoText('reach the ending cell')
         } 
     }
 
