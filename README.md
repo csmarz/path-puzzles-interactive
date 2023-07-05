@@ -1,6 +1,6 @@
-# Path Puzzles App Repository
+# Path Puzzles Interactive Park Repository
 
-**Path puzzle** is a pencil-and-paper puzzle introduced by Roderick Kimball in 2013. This repository contains the source code for the Path Puzzles App, which provides an user interface for solving Path puzzles. The app is currently live on https://joshuagatizz.pythonanywhere.com.
+**Path puzzle** is a pencil-and-paper puzzle introduced by Roderick Kimball in 2013. This repository contains the source code for the Path Puzzles Interactive Park, which provides an user interface for solving Path puzzles. The app is currently live on https://joshuagatizz.pythonanywhere.com.
 
 ## Local Installation
 
